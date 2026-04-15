@@ -95,5 +95,16 @@ public_users.get('/asyncisbn/:isbn', async function (req, res) {
     }
 });
 
+public_users.get('/asyncauthor/:author', async function (req, res) {
+    const author = req.params.author;
+
+    try {
+        const response = await axios.get(`http://localhost:5000/author/${author}`);
+        return res.send(response.data);
+    } catch (error) {
+        return res.status(500).json({ message: "Error fetching books by author" });
+    }
+});
+
 module.exports.general = public_users;
 module.exports.users = users;
