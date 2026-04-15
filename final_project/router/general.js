@@ -106,5 +106,16 @@ public_users.get('/asyncauthor/:author', async function (req, res) {
     }
 });
 
+public_users.get('/asynctitle/:title', async function (req, res) {
+    const title = req.params.title;
+
+    try {
+        const response = await axios.get(`http://localhost:5000/title/${title}`);
+        return res.send(response.data);
+    } catch (error) {
+        return res.status(500).json({ message: "Error fetching books by title" });
+    }
+});
+
 module.exports.general = public_users;
 module.exports.users = users;
