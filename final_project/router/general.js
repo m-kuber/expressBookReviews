@@ -84,5 +84,16 @@ public_users.get('/asyncbooks', async function (req, res) {
     }
 });
 
+public_users.get('/asyncisbn/:isbn', async function (req, res) {
+    const isbn = req.params.isbn;
+
+    try {
+        const response = await axios.get(`http://localhost:5000/isbn/${isbn}`);
+        return res.send(response.data);
+    } catch (error) {
+        return res.status(500).json({ message: "Error fetching book by ISBN" });
+    }
+});
+
 module.exports.general = public_users;
 module.exports.users = users;
