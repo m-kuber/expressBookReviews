@@ -3,6 +3,7 @@ let books = require("./booksdb.js");
 let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
+const axios = require('axios');
 
 const doesExist = (username) => {
     return users.some(user => user.username === username);
@@ -72,6 +73,15 @@ public_users.get('/title/:title', function (req, res) {
 public_users.get('/review/:isbn', function (req, res) {
     const isbn = req.params.isbn;
     return res.send(JSON.stringify(books[isbn].reviews, null, 4));
+});
+
+public_users.get('/asyncbooks', async function (req, res) {
+    try {
+        const response = await axios.get('http://localhost:5000/');
+        return res.send(response.data);
+    } catch (error) {
+        return res.status(500).json({ message: "Error fetching books" });
+    }
 });
 
 module.exports.general = public_users;
